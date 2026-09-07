@@ -165,7 +165,7 @@ export async function deleteBulkRegistrations(eventId: string, regIds: string[])
     .in('id', regIds)
 
   const teamIds = regDatas
-    ?.map(r => r.team_data?.team_id)
+    ?.map((r: any) => r.team_data?.team_id)
     .filter(Boolean)
 
   if (teamIds && teamIds.length > 0) {
