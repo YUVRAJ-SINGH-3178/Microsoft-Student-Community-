@@ -104,7 +104,7 @@ export async function deleteRegistration(eventId: string, regId: string) {
     .eq('id', session.user.id)
     .single()
 
-  if (!profile || (profile.role !== 'admin' && profile.role !== 'core_member')) {
+  if (!profile || profile.role !== 'admin') {
     return { error: 'Unauthorized' }
   }
 
@@ -118,15 +118,73 @@ export async function deleteRegistration(eventId: string, regId: string) {
     .single()
 
   if (regData?.team_data?.team_id) {
-    await supabaseAdmin.from('teams').delete().eq('id', regData.team_data.team_id)
+    const { error: teamErr } = await supabaseAdmin.from('teams').delete().eq('id', regData.team_data.team_id)
+    if (teamErr) console.error('Error deleting team:', teamErr)
   }
+
+  // Delete payment orders first to avoid foreign key constraint violations
+  await supabaseAdmin.from('payment_orders').delete().eq('registration_id', regId)
 
   const { error } = await supabaseAdmin
     .from('registrations')
     .delete()
     .eq('id', regId)
 
-  if (error) return { error: error.message }
+  if (error) {
+    console.error('Error deleting registration:', error)
+    return { error: error.message }
+  }
+
+  revalidatePath(`/admin/events/${eventId}`)
+  return { success: true }
+}
+
+export async function deleteBulkRegistrations(eventId: string, regIds: string[]) {
+  const supabase = await createClient()
+
+  // Verify access
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) return { error: 'Unauthorized' }
+
+  const { data: profile } = await supabase
+    .from('member_profiles')
+    .select('role')
+    .eq('id', session.user.id)
+    .single()
+
+  if (!profile || profile.role !== 'admin') {
+    return { error: 'Unauthorized' }
+  }
+
+  const supabaseAdmin = createAdminClient();
+
+  // Get team_ids to delete from teams if applicable
+  const { data: regDatas } = await supabaseAdmin
+    .from('registrations')
+    .select('team_data')
+    .in('id', regIds)
+
+  const teamIds = regDatas
+    ?.map(r => r.team_data?.team_id)
+    .filter(Boolean)
+
+  if (teamIds && teamIds.length > 0) {
+    const { error: teamErr } = await supabaseAdmin.from('teams').delete().in('id', teamIds)
+    if (teamErr) console.error('Error deleting teams:', teamErr)
+  }
+
+  // Delete payment orders first to avoid foreign key constraint violations
+  await supabaseAdmin.from('payment_orders').delete().in('registration_id', regIds)
+
+  const { error } = await supabaseAdmin
+    .from('registrations')
+    .delete()
+    .in('id', regIds)
+
+  if (error) {
+    console.error('Error deleting bulk registrations:', error)
+    return { error: error.message }
+  }
 
   revalidatePath(`/admin/events/${eventId}`)
   return { success: true }

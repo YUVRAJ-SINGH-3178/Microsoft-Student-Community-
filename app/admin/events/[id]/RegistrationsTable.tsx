@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Fragment } from 'react'
 import { createClient } from '@/utils/supabase/client'
-import { assignCertificates, updateRegistrationDetails, deleteRegistration } from './actions'
+import { assignCertificates, updateRegistrationDetails, deleteRegistration, deleteBulkRegistrations } from './actions'
 import IDCardModal from './IDCardModal'
 
 export default function RegistrationsTable({ registrations, eventTitle, eventId }: { registrations: any[], eventTitle: string, eventId: string }) {
@@ -18,6 +18,7 @@ export default function RegistrationsTable({ registrations, eventTitle, eventId 
   const [editForm, setEditForm] = useState<any>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [isDeleting, setIsDeleting] = useState<string | null>(null)
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false)
   const [isIDModalOpen, setIsIDModalOpen] = useState(false)
 
   useEffect(() => {
@@ -68,6 +69,22 @@ export default function RegistrationsTable({ registrations, eventTitle, eventId 
     }
     setSelectedIds(new Set())
     alert('Certificates Assigned Successfully!')
+  }
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return
+    if (!confirm(`Are you sure you want to delete ${selectedIds.size} registrations? This action cannot be undone.`)) return
+    
+    setIsBulkDeleting(true)
+    const idsArray = Array.from(selectedIds)
+    const res = await deleteBulkRegistrations(eventId, idsArray)
+    setIsBulkDeleting(false)
+    
+    if (res?.error) {
+      alert(`Error deleting registrations: ${res.error}`)
+      return
+    }
+    setSelectedIds(new Set())
   }
 
   const startEditing = (reg: any) => {
@@ -228,6 +245,13 @@ export default function RegistrationsTable({ registrations, eventTitle, eventId 
             className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-xl font-bold transition-all shadow-lg text-white disabled:opacity-50"
           >
             {isAssigning ? 'Assigning...' : 'Assign Certificates'}
+          </button>
+          <button 
+            disabled={selectedIds.size === 0 || isBulkDeleting}
+            onClick={handleBulkDelete}
+            className="px-4 py-3 bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30 rounded-xl font-bold transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
+          >
+            {isBulkDeleting ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-trash"></i>} Delete
           </button>
           <button 
             disabled={selectedIds.size === 0}
