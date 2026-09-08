@@ -14,6 +14,9 @@ export default function EditEventForm({ event }: { event: any }) {
   const [currentPosterUrl, setCurrentPosterUrl] = useState<string>(event.image_url || '')
   const [selectedPosterFile, setSelectedPosterFile] = useState<File | null>(null)
   const [posterPreview, setPosterPreview] = useState<string | null>(null)
+  const [currentBannerUrl, setCurrentBannerUrl] = useState<string>(event.banner_url || '')
+  const [selectedBannerFile, setSelectedBannerFile] = useState<File | null>(null)
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null)
   const [existingGallery, setExistingGallery] = useState<string[]>(event.gallery_urls || [])
   const [newGalleryFiles, setNewGalleryFiles] = useState<File[]>([])
   const [statusMsg, setStatusMsg] = useState<{ id: string, msg: string, type: 'error' | 'success' | 'info' } | null>(null)
@@ -113,6 +116,20 @@ export default function EditEventForm({ event }: { event: any }) {
     setCurrentPosterUrl('')
   }
 
+  function handleBannerChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) {
+      setSelectedBannerFile(file)
+      setBannerPreview(URL.createObjectURL(file))
+    }
+  }
+
+  function handleRemoveBanner() {
+    setSelectedBannerFile(null)
+    setBannerPreview(null)
+    setCurrentBannerUrl('')
+  }
+
   async function handleEditEvent(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -152,6 +169,16 @@ export default function EditEventForm({ event }: { event: any }) {
         image_url = await uploadImage(selectedPosterFile, 'event')
       } catch (err: any) {
         showStatus('edit_event', `Poster Upload Failed: ${err.message}`, 'error')
+        return
+      }
+    }
+
+    let banner_url = currentBannerUrl
+    if (selectedBannerFile && selectedBannerFile.size > 0) {
+      try {
+        banner_url = await uploadImage(selectedBannerFile, 'event')
+      } catch (err: any) {
+        showStatus('edit_event', `Banner Upload Failed: ${err.message}`, 'error')
         return
       }
     }
@@ -277,6 +304,45 @@ export default function EditEventForm({ event }: { event: any }) {
                     className="text-xs text-red-400 hover:text-red-300 font-semibold flex items-center gap-1.5 w-fit"
                   >
                     <i className="fas fa-trash-alt"></i> Remove Poster
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <label className="block text-xs font-bold text-[#a1a1aa] uppercase tracking-wider mb-2 mt-4">
+              Event Banner <span className="text-white/30 lowercase font-normal">(upload new image to update)</span>
+            </label>
+            <input 
+              type="file" 
+              name="banner" 
+              accept="image/*" 
+              onChange={handleBannerChange}
+              className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-500/20 file:text-blue-400 hover:file:bg-blue-500/30 transition-all cursor-pointer" 
+            />
+            
+            {/* Banner Preview */}
+            {(bannerPreview || currentBannerUrl) && (
+              <div className="mt-3 flex items-start gap-4 p-3 bg-black/40 border border-white/10 rounded-xl">
+                <img 
+                  src={bannerPreview || currentBannerUrl} 
+                  alt="Banner preview" 
+                  className="w-20 h-12 object-cover rounded-lg border border-white/10 shadow" 
+                />
+                <div className="flex-1 flex flex-col justify-between h-12 py-0">
+                  <div>
+                    <span className={`inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${bannerPreview ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}`}>
+                      {bannerPreview ? 'New Banner Selected' : 'Current Active Banner'}
+                    </span>
+                    <p className="text-xs text-white/60 mt-1 truncate max-w-[200px]">
+                      {selectedBannerFile ? selectedBannerFile.name : (currentBannerUrl ? 'Existing uploaded banner' : '')}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleRemoveBanner}
+                    className="text-xs text-red-400 hover:text-red-300 font-semibold flex items-center gap-1.5 w-fit"
+                  >
+                    <i className="fas fa-trash-alt"></i> Remove Banner
                   </button>
                 </div>
               </div>
