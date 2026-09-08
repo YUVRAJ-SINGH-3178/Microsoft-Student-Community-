@@ -47,6 +47,8 @@ export default function AdminPage() {
   const [chargeType, setChargeType] = useState<'per_person' | 'per_team'>('per_person')
   const [createPosterFile, setCreatePosterFile] = useState<File | null>(null)
   const [createPosterPreview, setCreatePosterPreview] = useState<string | null>(null)
+  const [createBannerFile, setCreateBannerFile] = useState<File | null>(null)
+  const [createBannerPreview, setCreateBannerPreview] = useState<string | null>(null)
   
   const [statusMsg, setStatusMsg] = useState<{ id: string, msg: string, type: 'error' | 'success' | 'info' } | null>(null)
 
@@ -316,6 +318,19 @@ export default function AdminPage() {
     setCreatePosterPreview(null)
   }
 
+  function handleCreateBannerChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) {
+      setCreateBannerFile(file)
+      setCreateBannerPreview(URL.createObjectURL(file))
+    }
+  }
+
+  function handleRemoveCreateBanner() {
+    setCreateBannerFile(null)
+    setCreateBannerPreview(null)
+  }
+
   async function handleCreateEvent(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formElement = e.currentTarget
@@ -361,11 +376,23 @@ export default function AdminPage() {
       }
     }
 
+    let banner_url = ''
+    const bannerFile = formData.get('banner') as File
+    const bannerToUpload = createBannerFile || (bannerFile && bannerFile.size > 0 ? bannerFile : null)
+    if (bannerToUpload && bannerToUpload.size > 0) {
+      try {
+        banner_url = await uploadImage(bannerToUpload, 'event')
+      } catch (err: any) {
+        showStatus('create_event', `Banner Upload Failed: ${err.message}`, 'error')
+        return
+      }
+    }
+
     const maxCapStr = formData.get('max_capacity') as string
     const max_capacity = maxCapStr ? parseInt(maxCapStr) : null
 
     const { error } = await supabase.from('events').insert([{ 
-      title, slug, date_start, status, type, location: formData.get('location'), description: formData.get('description'), image_url, registration_open: formData.get('registration_open') === 'on', show_opening_soon: formData.get('show_opening_soon') === 'on', form_requirements, certificate_html: certificateHtml, max_capacity 
+      title, slug, date_start, status, type, location: formData.get('location'), description: formData.get('description'), image_url, banner_url, registration_open: formData.get('registration_open') === 'on', show_opening_soon: formData.get('show_opening_soon') === 'on', form_requirements, certificate_html: certificateHtml, max_capacity 
     }])
     
     if (error) {
@@ -375,6 +402,8 @@ export default function AdminPage() {
       formElement.reset()
       setCreatePosterFile(null)
       setCreatePosterPreview(null)
+      setCreateBannerFile(null)
+      setCreateBannerPreview(null)
       fetchEvents()
     }
   }
@@ -864,6 +893,43 @@ export default function AdminPage() {
                                 className="text-xs text-red-400 hover:text-red-300 font-semibold flex items-center gap-1.5 w-fit"
                               >
                                 <i className="fas fa-trash-alt"></i> Remove Poster
+                              </button>
+                            </div>
+                          </div>
+                        )}
+
+                        <label className="block text-xs font-bold text-white/70 uppercase tracking-wider mb-2 mt-4">
+                          Event Banner Image (Portal Background)
+                        </label>
+                        <input 
+                          type="file" 
+                          name="banner" 
+                          accept="image/*" 
+                          onChange={handleCreateBannerChange}
+                          className="w-full bg-black/40 border border-white/10 focus:border-blue-500/50 rounded-xl px-4 py-2.5 text-white outline-none transition-all text-sm file:mr-4 file:py-1.5 file:px-3.5 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-500/10 file:text-blue-400 hover:file:bg-blue-500/20 file:transition-all cursor-pointer" 
+                        />
+                        {createBannerPreview && (
+                          <div className="mt-3 flex items-start gap-4 p-3 bg-black/40 border border-white/10 rounded-xl">
+                            <img 
+                              src={createBannerPreview} 
+                              alt="Banner preview" 
+                              className="w-20 h-12 object-cover rounded-lg border border-white/10 shadow shrink-0" 
+                            />
+                            <div className="flex-1 flex flex-col justify-between h-12 py-0">
+                              <div>
+                                <span className="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                                  Banner Selected
+                                </span>
+                                <p className="text-xs text-white/60 mt-1 truncate max-w-[200px]">
+                                  {createBannerFile?.name}
+                                </p>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={handleRemoveCreateBanner}
+                                className="text-xs text-red-400 hover:text-red-300 font-semibold flex items-center gap-1.5 w-fit"
+                              >
+                                <i className="fas fa-trash-alt"></i> Remove Banner
                               </button>
                             </div>
                           </div>
