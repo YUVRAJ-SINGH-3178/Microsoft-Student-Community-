@@ -30,6 +30,7 @@ export default function EventPortalClient({
     ? selectedEvent.form_requirements.speakers.filter((item: any) => item.name)
     : [];
 
+  const hasBanner = !!selectedEvent.banner_url;
   const bannerImage = selectedEvent.banner_url || selectedEvent.image_url || "https://lkbwunzswqbnoygxtilm.supabase.co/storage/v1/object/public/webpage/hackmsc1.jpg";
 
   return (
@@ -52,6 +53,7 @@ export default function EventPortalClient({
                 <img
                   src={bannerImage}
                   alt={selectedEvent.title}
+                  className={hasBanner ? "is-banner" : "is-poster"}
                   loading="eager"
                   decoding="async"
                   fetchPriority="high"
