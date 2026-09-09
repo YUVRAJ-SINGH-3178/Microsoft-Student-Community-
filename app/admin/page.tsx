@@ -141,18 +141,23 @@ export default function AdminPage() {
 
   async function uploadImage(file: File, pathPrefix: string) {
     const compressed = await compressAndConvertImage(file)
-    const fileExt = compressed.type === 'image/webp' ? 'webp' : (file.name.split('.').pop() || 'png')
-    const fileName = `${pathPrefix}-${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`
     
-    const { data, error } = await supabase.storage.from('images').upload(fileName, compressed, {
-      contentType: compressed.type || 'image/webp',
-      cacheControl: '3600',
-      upsert: true
+    const formData = new FormData()
+    formData.append('file', compressed)
+    formData.append('pathPrefix', pathPrefix)
+    formData.append('bucket', 'images')
+
+    const res = await fetch('/api/admin/upload-image', {
+      method: 'POST',
+      body: formData
     })
-    if (error) throw error
+    const data = await res.json()
     
-    const { data: publicData } = supabase.storage.from('images').getPublicUrl(fileName)
-    return publicData.publicUrl
+    if (!res.ok || data.error) {
+      throw new Error(data.error || 'Failed to upload image')
+    }
+    
+    return data.url
   }
 
   async function fetchUsers() {
