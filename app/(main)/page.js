@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ParticleBackground from "@/components/ParticleBackground";
-import MagneticButton from "@/components/ui/MagneticButton";
 
 export default function Home() {
   const videoRef = useRef(null);
@@ -199,7 +198,7 @@ export default function Home() {
               pushing technical boundaries.
             </p>
             <div className="hero-cta-group">
-              <MagneticButton
+              <a
                 href="https://discord.gg/K5NC5wAhg"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -208,10 +207,10 @@ export default function Home() {
               >
                 <i className="fab fa-discord"></i> Join Discord{" "}
                 <i className="fa-solid fa-arrow-right btn-arrow"></i>
-              </MagneticButton>
-              <MagneticButton href="#ecosystem" className="hero-btn-secondary">
+              </a>
+              <a href="#ecosystem" className="hero-btn-secondary">
                 Explore Ecosystem <i className="fa-solid fa-arrow-down"></i>
-              </MagneticButton>
+              </a>
             </div>
           </div>
 
