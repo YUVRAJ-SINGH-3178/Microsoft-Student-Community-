@@ -271,7 +271,7 @@ export default function Home() {
                   <span className="telemetry-idx">01</span>
                   <span className="telemetry-beacon live"></span>
                   <span className="telemetry-title">SYNORA &apos;26</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">18-Hr National Hackathon</span>
                   <span className="telemetry-status-tag">LIVE</span>
                 </a>
@@ -281,7 +281,7 @@ export default function Home() {
                   <span className="telemetry-idx">02</span>
                   <i className="fa-solid fa-cloud telemetry-ico text-blue-400"></i>
                   <span className="telemetry-title">Azure &amp; Cloud</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Distributed Scale</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -290,7 +290,7 @@ export default function Home() {
                   <span className="telemetry-idx">03</span>
                   <i className="fa-solid fa-brain telemetry-ico text-amber-400"></i>
                   <span className="telemetry-title">Applied AI</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">LLMs &amp; Cognitive Services</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -299,7 +299,7 @@ export default function Home() {
                   <span className="telemetry-idx">04</span>
                   <i className="fa-solid fa-users telemetry-ico text-cyan-400"></i>
                   <span className="telemetry-title">50+ Engineers</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Active Campus Guild</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -308,7 +308,7 @@ export default function Home() {
                   <span className="telemetry-idx">05</span>
                   <i className="fa-solid fa-trophy telemetry-ico text-yellow-400"></i>
                   <span className="telemetry-title">₹1,00,000+</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Hackathon Prize Pool</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -317,7 +317,7 @@ export default function Home() {
                   <span className="telemetry-idx">06</span>
                   <i className="fa-solid fa-code-branch telemetry-ico text-purple-400"></i>
                   <span className="telemetry-title">Open Source</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Production Tooling</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -326,7 +326,7 @@ export default function Home() {
                   <span className="telemetry-idx">07</span>
                   <i className="fa-solid fa-award telemetry-ico text-blue-400"></i>
                   <span className="telemetry-title">MLSA Chapter</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Microsoft Ambassadors</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -338,7 +338,7 @@ export default function Home() {
                   <span className="telemetry-idx">01</span>
                   <span className="telemetry-beacon live"></span>
                   <span className="telemetry-title">SYNORA &apos;26</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">18-Hr National Hackathon</span>
                   <span className="telemetry-status-tag">LIVE</span>
                 </a>
@@ -348,7 +348,7 @@ export default function Home() {
                   <span className="telemetry-idx">02</span>
                   <i className="fa-solid fa-cloud telemetry-ico text-blue-400"></i>
                   <span className="telemetry-title">Azure &amp; Cloud</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Distributed Scale</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -357,7 +357,7 @@ export default function Home() {
                   <span className="telemetry-idx">03</span>
                   <i className="fa-solid fa-brain telemetry-ico text-amber-400"></i>
                   <span className="telemetry-title">Applied AI</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">LLMs &amp; Cognitive Services</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -366,7 +366,7 @@ export default function Home() {
                   <span className="telemetry-idx">04</span>
                   <i className="fa-solid fa-users telemetry-ico text-cyan-400"></i>
                   <span className="telemetry-title">50+ Engineers</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Active Campus Guild</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -375,7 +375,7 @@ export default function Home() {
                   <span className="telemetry-idx">05</span>
                   <i className="fa-solid fa-trophy telemetry-ico text-yellow-400"></i>
                   <span className="telemetry-title">₹1,00,000+</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Hackathon Prize Pool</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -384,7 +384,7 @@ export default function Home() {
                   <span className="telemetry-idx">06</span>
                   <i className="fa-solid fa-code-branch telemetry-ico text-purple-400"></i>
                   <span className="telemetry-title">Open Source</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Production Tooling</span>
                 </div>
                 <span className="telemetry-divider">+</span>
@@ -393,7 +393,7 @@ export default function Home() {
                   <span className="telemetry-idx">07</span>
                   <i className="fa-solid fa-award telemetry-ico text-blue-400"></i>
                   <span className="telemetry-title">MLSA Chapter</span>
-                  <span className="telemetry-sep">//</span>
+                  <span className="telemetry-sep">{"//"}</span>
                   <span className="telemetry-desc">Microsoft Ambassadors</span>
                 </div>
                 <span className="telemetry-divider">+</span>

@@ -399,7 +399,7 @@ export default function About() {
               <div className="origin-eyebrow-line">
                 <span className="origin-beacon-dot"></span>
                 <span className="origin-eyebrow-main">OUR ORIGIN</span>
-                <span className="origin-eyebrow-sep">//</span>
+                <span className="origin-eyebrow-sep">{"//"}</span>
                 <span className="origin-eyebrow-tag">GENESIS ARCHIVE</span>
               </div>
 
@@ -486,7 +486,7 @@ export default function About() {
             <div className="manifesto-eyebrow-line">
               <span className="manifesto-pulse-beacon"></span>
               <span className="manifesto-eyebrow-main">OUR PHILOSOPHY</span>
-              <span className="manifesto-eyebrow-sep">//</span>
+              <span className="manifesto-eyebrow-sep">{"//"}</span>
               <span className="manifesto-eyebrow-sub">THE FOUNDATIONAL PRINCIPLES</span>
             </div>
             <h2 className="manifesto-monumental-title">
@@ -602,7 +602,7 @@ export default function About() {
             <div className="journey-eyebrow-line">
               <span className="journey-beacon-dot"></span>
               <span className="journey-eyebrow-main">OUR JOURNEY</span>
-              <span className="journey-eyebrow-sep">//</span>
+              <span className="journey-eyebrow-sep">{"//"}</span>
               <span className="journey-eyebrow-sub">THE EXPANSION CHRONICLE</span>
             </div>
             <h2 className="journey-monumental-title">
